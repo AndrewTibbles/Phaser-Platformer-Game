@@ -1,4 +1,22 @@
 // =============================================================================
+// sprites
+// =============================================================================
+
+//
+// player sprite
+//
+function Player(game, x, y) {
+    // call Phaser.Sprite constructor
+    Phaser.Sprite.call(this, game, x, y, 'player');
+
+    this.anchor.set(0.5, 0.5);
+}
+
+// inherit from Phaser.Sprite
+Player.prototype = Object.create(Phaser.Sprite.prototype);
+Player.prototype.constructor = Player;
+
+// =============================================================================
 // game states
 // =============================================================================
 
@@ -14,6 +32,7 @@ PlayState.preload = function () {
     this.game.load.image('grass:4x1', 'images/grass_4x1.png');
     this.game.load.image('grass:2x1', 'images/grass_2x1.png');
     this.game.load.image('grass:1x1', 'images/grass_1x1.png');
+    this.game.load.image('player', 'images/player_stopped.png');
 };
 
 PlayState.create = function () {
@@ -24,10 +43,18 @@ PlayState.create = function () {
 PlayState._loadLevel = function (data) {
     // spawn all platforms
     data.platforms.forEach(this._spawnPlatform, this);
+    // spawn player and enemies
+    this._spawnCharacters({player: data.player, spiders: data.spiders});
 };
 
 PlayState._spawnPlatform = function (platform) {
     this.game.add.sprite(platform.x, platform.y, platform.image);
+};
+
+PlayState._spawnCharacters = function (data) {
+    // spawn player
+    this.player = new Player(this.game, data.player.x, data.player.y);
+    this.game.add.existing(this.player);
 };
 
 // =============================================================================
