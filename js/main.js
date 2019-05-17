@@ -6,7 +6,6 @@
 // player sprite
 //
 function Player(game, x, y) {
-    // call Phaser.Sprite constructor
     Phaser.Sprite.call(this, game, x, y, 'player');
 
     this.anchor.set(0.5, 0.5);
@@ -16,11 +15,24 @@ function Player(game, x, y) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
+Player.prototype.move = function (direction) {
+    this.x += direction * 2.5; // 2.5 pixels each frame
+};
+
 // =============================================================================
 // game states
 // =============================================================================
 
 PlayState = {};
+
+PlayState.init = function () {
+    this.game.renderer.renderSession.roundPixels = true;
+
+    this.keys = this.game.input.keyboard.addKeys({
+        left: Phaser.KeyCode.LEFT,
+        right: Phaser.KeyCode.RIGHT
+    });
+};
 
 PlayState.preload = function () {
     this.game.load.json('level:1', 'data/level01.json');
@@ -38,6 +50,19 @@ PlayState.preload = function () {
 PlayState.create = function () {
     this.game.add.image(0, 0, 'background');
     this._loadLevel(this.game.cache.getJSON('level:1'));
+};
+
+PlayState.update = function () {
+    this._handleInput();
+};
+
+PlayState._handleInput = function () {
+    if (this.keys.left.isDown) { // move player left
+        this.player.move(-1);
+    }
+    else if (this.keys.right.isDown) { // move player right
+        this.player.move(1);
+    }
 };
 
 PlayState._loadLevel = function (data) {
