@@ -1,19 +1,16 @@
 import Player from "./player.js";
 import createRotatingPlatform from "./create-rotating-platform.js";
 
-var mapname = "map"
-let map
-let tileset
-    //map.createDynamicLayer("Background", tileset, 0, 0);
-let groundLayer
-let lavaLayer
-    //map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
+export default 
+class MainScene extends Phaser.Scene {
+  
+  constructor() {
+    super({key :"mainscene"});
+  }
 
-export default class MainScene extends Phaser.Scene {
   preload() {
     //this.load.tilemapTiledJSON("map", "../assets/tilemaps/level.json");
     this.load.tilemapTiledJSON("map", "../assets/tilemaps/level.json");
-    this.load.tilemapTiledJSON("map2", "../assets/tilemaps/level2.json");
     this.load.image(
       "kenney-tileset-64px-extruded",
       "../assets/tilesets/kenney-tileset-64px-extruded.png"
@@ -42,11 +39,11 @@ export default class MainScene extends Phaser.Scene {
 
 
   create() {
-    map = this.make.tilemap({ key: mapname });
-    tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
+    const map = this.make.tilemap({ key: "map" });
+    const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
     map.createDynamicLayer("Background", tileset, 0, 0);
-    groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
-    lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
+    const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
+    const lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
     map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
 
 
@@ -184,14 +181,8 @@ export default class MainScene extends Phaser.Scene {
   onLevel1Win() {
     // Celebrate only once
     this.unsubscribeLevel1Win();
-    map.destroy()
-    this.load.tilemapTiledJSON("map2", "../assets/tilemaps/level2.json");
-    mapname = "map2"
-    map = this.make.tilemap({ key: mapname });
-    map.createDynamicLayer("Background", tileset, 0, 0);
-    groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
-    lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
-    map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
+    //map.destroy()
+    this.scene.start('level2');
     
   }
 }

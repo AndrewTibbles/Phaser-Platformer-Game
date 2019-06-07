@@ -63,6 +63,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":22,
+         "name":"Sign",
+         "objects":[
+                {
+                 "height":63,
+                 "id":69,
+                 "name":"walking_controls",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":511,
+                 "y":383
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"Platform Locations",
          "objects":[
@@ -286,8 +308,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
- "nextobjectid":69,
+ "nextlayerid":23,
+ "nextobjectid":70,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
