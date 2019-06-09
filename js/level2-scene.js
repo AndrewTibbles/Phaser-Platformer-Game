@@ -17,6 +17,7 @@ class Level2 extends Phaser.Scene {
         "../assets/tilesets/kenney-tileset-64px-extruded.png"
       );
   
+  
       this.load.image("wooden-plank", "../assets/images/wooden-plank.png");
       this.load.image("block", "../assets/images/block.png");
   
@@ -113,14 +114,6 @@ class Level2 extends Phaser.Scene {
         callback: this.onPlayerWin,
         context: this
       });
-  
-      const help = this.add.text(16, 16, "Arrows/WASD to move the player.", {
-        fontSize: "18px",
-        padding: { x: 10, y: 5 },
-        backgroundColor: "#ffffff",
-        fill: "#000000"
-      });
-      help.setScrollFactor(0).setDepth(1000);
     }
   
     onPlayerCollide({ gameObjectB }) {

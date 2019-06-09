@@ -7,7 +7,7 @@ const config = {
   width: 800,
   height: 480,
   parent: "game-container",
-  scene: [MainMenu, MainScene, Level2],
+  scene: [Level2],
   pixelArt: true,
   physics: { default: "matter" },
   plugins: {

@@ -1,6 +1,8 @@
 import Player from "./player.js";
 import createRotatingPlatform from "./create-rotating-platform.js";
 
+var help = "";
+
 export default 
 class MainScene extends Phaser.Scene {
   
@@ -93,6 +95,29 @@ class MainScene extends Phaser.Scene {
     map.getObjectLayer("Platform Locations").objects.forEach(point => {
       createRotatingPlatform(this, point.x, point.y);
     });
+    const rectwalkcontsign = map.findObject("Sign", obj => obj.name === "walking_controls");
+    const walkcontsignSensor = this.matter.add.rectangle(
+      rectwalkcontsign.x + rectwalkcontsign.width / 2,
+      rectwalkcontsign.y + rectwalkcontsign.height / 2,
+      rectwalkcontsign.width,
+      rectwalkcontsign.height,
+      {
+        isSensor: true, // It shouldn't physically interact with other bodies
+        isStatic: true // It shouldn't move
+      }
+    );
+
+    const rectsignbewarerotplatform = map.findObject("Sign", obj => obj.name === "moving_platforms");
+    const signbewarerotplatformSensor = this.matter.add.rectangle(
+      rectsignbewarerotplatform.x + rectsignbewarerotplatform.width / 2,
+      rectsignbewarerotplatform.y + rectsignbewarerotplatform.height / 2,
+      rectsignbewarerotplatform.width,
+      rectsignbewarerotplatform.height,
+      {
+        isSensor: true, // It shouldn't physically interact with other bodies
+        isStatic: true // It shouldn't move
+      }
+    );
 
     const rectwin = map.findObject("Sensors", obj => obj.name === "Level1Win");
     const Level1WinSensor = this.matter.add.rectangle(
@@ -132,7 +157,21 @@ class MainScene extends Phaser.Scene {
       context: this
     });
 
-    const help = this.add.text(16, 16, "Arrows/WASD to move the player.", {
+    this.unsubscribewalkcontsign = this.matterCollision.addOnCollideStart({
+      objectA: this.player.sprite,
+      objectB: walkcontsignSensor,
+      callback: this.onwalkcontsign,
+      context: this
+    });
+
+    this.unsubscribesignbewarerotplatform = this.matterCollision.addOnCollideStart({
+      objectA: this.player.sprite,
+      objectB: signbewarerotplatformSensor,
+      callback: this.onsignbewarerotplatform,
+      context: this
+    })
+
+    help = this.add.text(16, 16, "Arrows/WASD to move the player.", {
       fontSize: "18px",
       padding: { x: 10, y: 5 },
       backgroundColor: "#ffffff",
@@ -184,6 +223,30 @@ class MainScene extends Phaser.Scene {
     //map.destroy()
     this.scene.start('level2');
     
+  }
+
+  onwalkcontsign(){
+    this.unsubscribewalkcontsign();
+    help.destroy();
+    help = this.add.text(16, 16, "Use the up or W keys to jump.", {
+      fontSize: "18px",
+      padding: { x: 10, y: 5 },
+      backgroundColor: "#ffffff",
+      fill: "#000000"
+    });
+    help.setScrollFactor(0).setDepth(1000);
+  }
+  
+  onsignbewarerotplatform(){
+    this.unsubscribesignbewarerotplatform();
+    help.destroy();
+    help = this.add.text(16, 16, "Beware the rotating platforms!", {
+      fontSize: "18px",
+      padding: { x: 10, y: 5 },
+      backgroundColor: "#ffffff",
+      fill: "#000000"
+    });
+    help.setScrollFactor(0).setDepth(1000);
   }
 }
 //http://www.html5gamedevs.com/topic/11094-dynamically-loading-tilemaps/
