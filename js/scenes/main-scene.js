@@ -1,13 +1,13 @@
-import Player from "./player.js";
-import createRotatingPlatform from "./create-rotating-platform.js";
+import Player from "../player.js";
+import createRotatingPlatform from "../create-rotating-platform.js";
 
 var help = "";
 
-export default 
-class MainScene extends Phaser.Scene {
-  
+export default
+  class MainScene extends Phaser.Scene {
+
   constructor() {
-    super({key :"mainscene"});
+    super({ key: "mainscene" });
   }
 
   preload() {
@@ -21,7 +21,15 @@ class MainScene extends Phaser.Scene {
     this.load.image("wooden-plank", "../assets/images/wooden-plank.png");
     this.load.image("block", "../assets/images/block.png");
 
-    this.load.image('background', 'assets/images/background.png');
+    //this.load.image('background', 'assets/images/background.png');
+
+    this.load.image('background1_clouds_1', 'assets/images/game_background_1/layers/clouds_1.png');
+    this.load.image('background1_clouds_2', 'assets/images/game_background_1/layers/clouds_2.png');
+    this.load.image('background1_clouds_3', 'assets/images/game_background_1/layers/clouds_3.png');
+    this.load.image('background1_clouds_4', 'assets/images/game_background_1/layers/clouds_4.png');
+    this.load.image('background1_rocks_1', 'assets/images/game_background_1/layers/rocks_1.png');
+    this.load.image('background1_rocks_2', 'assets/images/game_background_1/layers/rocks_2.png');
+    this.load.image('background1_sky', 'assets/images/game_background_1/layers/sky.png');
 
     this.load.spritesheet(
       "player",
@@ -35,27 +43,57 @@ class MainScene extends Phaser.Scene {
     );
 
     this.load.atlas("emoji", "../assets/atlases/emoji.png", "../assets/atlases/emoji.json");
-
-    this.load.audio('game', ['assets/audio/Extreme_Game_watermarked.mp3']);
   }
 
 
   create() {
     const map = this.make.tilemap({ key: "map" });
+
+    //this.background = this.add.tileSprite(0, 0, 1000, 1000, 'background', 'assets/images/background.png').setOrigin(0).setDepth(-100).setScrollFactor(0)
+
+    // Get the window sizes
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+
+    // Find the center of the top space
+    let topBackgroundXOrigin = windowWidth / 2;
+    let topBackgroundYOrigin = (windowHeight / 5) * 1.5;
+    let topBackgroundHeight = (windowHeight / 5) * 3;
+
+    // Base width and height of the images
+    let imageBaseWidth = 1920;
+    let imageBaseHeight = 1080;
+    let heightRatio = topBackgroundHeight / imageBaseHeight;
+
+    // Add the sky image at the right location and resize it to take all the space, no scaling needed
+    let skyImage = this.add.image(topBackgroundXOrigin, topBackgroundYOrigin, 'background1_sky');
+    skyImage.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+    // Add each layer one by one
+    this.cloud1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_1');
+    this.cloud1.setScale(heightRatio).setScrollFactor(0);
+
+    this.cloud2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_2');
+    this.cloud2.setScale(heightRatio).setScrollFactor(0);
+
+    this.rocks1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_rocks_1');
+    this.rocks1.setScale(heightRatio).setScrollFactor(0);
+
+    this.cloud3 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_3');
+    this.cloud3.setScale(heightRatio).setScrollFactor(0);
+
+    this.rocks2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_rocks_2');
+    this.rocks2.setScale(heightRatio).setScrollFactor(0);
+
+    this.cloud4 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_4');
+    this.cloud4.setScale(heightRatio).setScrollFactor(0);
+
     const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
     map.createDynamicLayer("Background", tileset, 0, 0);
     const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
     const lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
     map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
-
-
-
-    this.background = this.add.tileSprite(0, 0, 1000, 1000, 'background', 'assets/images/background.png').setOrigin(0).setDepth(-100).setScrollFactor(0)
-
-    var music = this.sound.add('game', { loop: true });
-
-    music.play();
-
+    
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
     lavaLayer.setCollisionByProperty({ collides: true });
@@ -222,10 +260,10 @@ class MainScene extends Phaser.Scene {
     this.unsubscribeLevel1Win();
     //map.destroy()
     this.scene.start('level2');
-    
+
   }
 
-  onwalkcontsign(){
+  onwalkcontsign() {
     this.unsubscribewalkcontsign();
     help.destroy();
     help = this.add.text(16, 16, "Use the up or W keys to jump.", {
@@ -236,8 +274,8 @@ class MainScene extends Phaser.Scene {
     });
     help.setScrollFactor(0).setDepth(1000);
   }
-  
-  onsignbewarerotplatform(){
+
+  onsignbewarerotplatform() {
     this.unsubscribesignbewarerotplatform();
     help.destroy();
     help = this.add.text(16, 16, "Beware the rotating platforms!", {
@@ -247,6 +285,15 @@ class MainScene extends Phaser.Scene {
       fill: "#000000"
     });
     help.setScrollFactor(0).setDepth(1000);
+  }
+
+  update() {
+    this.cloud1.tilePositionX += 0.05;
+    this.cloud2.tilePositionX += 0.05;
+    this.rocks1.tilePositionX += 0.10;
+    this.cloud3.tilePositionX += 0.15;
+    this.rocks2.tilePositionX += 0.20;
+    this.cloud4.tilePositionX += 0.30;
   }
 }
 //http://www.html5gamedevs.com/topic/11094-dynamically-loading-tilemaps/

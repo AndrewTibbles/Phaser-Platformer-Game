@@ -17,6 +17,7 @@ export default
         this.load.image("sprBtnRestartDown", "assets/MainMenu/sprBtnRestartDown.png");
         this.load.audio("sndBtnOver", "assets/MainMenu/sndBtnOver.wav");
         this.load.audio("sndBtnDown", "assets/MainMenu/sndBtnDown.wav");
+        this.load.audio('game', ['assets/audio/Extreme_Game_watermarked.mp3']);
     }
 
     create() {
@@ -60,6 +61,11 @@ export default
             align: 'center'
         });
         this.title.setOrigin(0.5);
+
+        var music = this.sound.add('game', { loop: true });
+
+        music.play();
+    
     }
 
     update() {

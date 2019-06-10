@@ -1,5 +1,5 @@
-import Player from "./player.js";
-import createRotatingPlatform from "./create-rotating-platform.js";
+import Player from "../player.js";
+import createRotatingPlatform from "../create-rotating-platform.js";
 
 export default 
 class Level2 extends Phaser.Scene {
@@ -35,8 +35,6 @@ class Level2 extends Phaser.Scene {
       );
   
       this.load.atlas("emoji", "../assets/atlases/emoji.png", "../assets/atlases/emoji.json");
-  
-      this.load.audio('game', ['assets/audio/Extreme_Game_watermarked.mp3']);
     }
   
   
@@ -51,10 +49,6 @@ class Level2 extends Phaser.Scene {
   
   
       this.background = this.add.tileSprite(0, 0, 1000, 1000, 'background', 'assets/images/background.png').setOrigin(0).setDepth(-100).setScrollFactor(0)
-  
-      var music = this.sound.add('game', { loop: true });
-  
-      music.play();
   
       // Set colliding tiles before converting the layer to Matter bodies
       groundLayer.setCollisionByProperty({ collides: true });
