@@ -41,7 +41,6 @@ export default
         spacing: 2
       }
     );
-
     this.load.atlas("emoji", "../assets/atlases/emoji.png", "../assets/atlases/emoji.json");
   }
 
@@ -71,29 +70,29 @@ export default
 
     // Add each layer one by one
     this.cloud1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_1');
-    this.cloud1.setScale(heightRatio).setScrollFactor(0);
+    this.cloud1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     this.cloud2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_2');
-    this.cloud2.setScale(heightRatio).setScrollFactor(0);
+    this.cloud2.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     this.rocks1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_rocks_1');
-    this.rocks1.setScale(heightRatio).setScrollFactor(0);
+    this.rocks1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     this.cloud3 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_3');
-    this.cloud3.setScale(heightRatio).setScrollFactor(0);
+    this.cloud3.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     this.rocks2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_rocks_2');
-    this.rocks2.setScale(heightRatio).setScrollFactor(0);
+    this.rocks2.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     this.cloud4 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_4');
-    this.cloud4.setScale(heightRatio).setScrollFactor(0);
+    this.cloud4.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
     const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
     map.createDynamicLayer("Background", tileset, 0, 0);
     const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
     const lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
     map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
-    
+
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
     lavaLayer.setCollisionByProperty({ collides: true });

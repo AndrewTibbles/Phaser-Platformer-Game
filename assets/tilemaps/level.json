@@ -4052,6 +4052,15 @@
                         }]
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":3000,
+                         "tileid":676
+                        }, 
+                        {
+                         "duration":3000,
+                         "tileid":721
+                        }],
                  "id":676,
                  "properties":[
                         {
