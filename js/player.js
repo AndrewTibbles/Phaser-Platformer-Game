@@ -1,5 +1,6 @@
 import MultiKey from "./multi-key.js";
 
+
 export default class Player {
   constructor(scene, x, y) {
     this.scene = scene;
@@ -25,9 +26,9 @@ export default class Player {
       repeat: -1
     });
     anims.create({
-      key: "player-death",
-      frames: anims.generateFrameNumbers("player", { start: 4, end: 6 }),
-      frameRate: 3,
+      key: "player_death",
+      frames: anims.generateFrameNumbers("player", { start: 24, end: 28 }),
+      frameRate: 5,
       repeat: 0
     });
 
@@ -81,6 +82,7 @@ export default class Player {
     // Jumping is going to have a cooldown
     this.canJump = true;
     this.jumpCooldownTimer = null;
+    this.onDeath = false;
 
     // Before matter's update, reset our record of which surfaces the player is touching.
     scene.matter.world.on("beforeupdate", this.resetTouching, this);
@@ -136,7 +138,13 @@ export default class Player {
   }
 
   freeze() {
-    this.sprite.setStatic(true);
+    this.canJump = false;
+    this.walkspeed = 0;
+    //this.sprite.setStatic(true);
+  }
+
+  death() {
+    this.onDeath = true;
   }
 
   update() {
@@ -216,9 +224,17 @@ export default class Player {
       if (isCrouchKeyDown) {
         sprite.anims.play("player-crouch", true);
       }
-      else if (sprite.body.force.x !== 0) sprite.anims.play("player-run", true);
-      else sprite.anims.play("player-idle", true);
-    } else {
+      else if (sprite.body.force.x !== 0) {
+        sprite.anims.play("player-run", true);
+      }
+      else if (this.onDeath == true) {
+        this.sprite.anims.play("player_death", true);
+      }
+      else {
+        sprite.anims.play("player-idle", true);
+      }
+    }
+    else {
       sprite.anims.stop();
       sprite.setTexture("player", 10);
     }

@@ -226,19 +226,31 @@ export default
     // Tiled in your game)
     if (tile.properties.isLethal) {
       // Unsubscribe from collision events so that this logic is run only once
-      this.unsubscribePlayerCollide();
-
       this.player.freeze();
-      const cam = this.cameras.main;
-      cam.fade(250, 0, 0, 0);
-      cam.once("camerafadeoutcomplete", () => this.scene.restart());
+      this.player.death();
+      this.time.addEvent({
+        delay: 600,
+        callback: () => {
+          this.unsubscribePlayerCollide();
+          const cam = this.cameras.main;
+          cam.fade(250, 0, 0, 0);
+          cam.once("camerafadeoutcomplete", () => this.scene.restart());
+          this.time.addEvent({
+            delay: 300,
+            callback: () => {
+              this.player.onDeath = false;
+            },
+            loop: true
+          })
+        },
+        loop: true
+      })
     }
   }
 
   onPlayerWin() {
     // Celebrate only once
     this.unsubscribeCelebrate();
-
     // Drop some emojis, of course
     for (let i = 0; i < 35; i++) {
       const x = this.player.sprite.x + Phaser.Math.RND.integerInRange(-50, 50);
