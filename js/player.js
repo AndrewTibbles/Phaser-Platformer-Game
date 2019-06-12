@@ -99,10 +99,10 @@ export default class Player {
     });
 
     // Track the keys
-    const { LEFT, RIGHT, UP, DOWN, A, D, W, S } = Phaser.Input.Keyboard.KeyCodes;
+    const { LEFT, RIGHT, UP, DOWN, A, D, W, S, SPACE } = Phaser.Input.Keyboard.KeyCodes;
     this.leftInput = new MultiKey(scene, [LEFT, A]);
     this.rightInput = new MultiKey(scene, [RIGHT, D]);
-    this.jumpInput = new MultiKey(scene, [UP, W]);
+    this.jumpInput = new MultiKey(scene, [UP, W, SPACE]);
     this.crouchInput = new MultiKey(scene, [DOWN, S]);
 
     this.destroyed = false;
@@ -140,11 +140,16 @@ export default class Player {
   freeze() {
     this.canJump = false;
     this.walkspeed = 0;
+    this.leftInput = new MultiKey(this.scene, []);
+    this.rightInput = new MultiKey(this.scene, []);
+    this.jumpInput = new MultiKey(this.scene, []);
+    this.crouchInput = new MultiKey(this.scene, []);
     //this.sprite.setStatic(true);
   }
 
   death() {
     this.onDeath = true;
+
   }
 
   update() {
