@@ -1,6 +1,5 @@
 import MultiKey from "./multi-key.js";
 
-
 export default class Player {
   constructor(scene, x, y) {
     this.scene = scene;

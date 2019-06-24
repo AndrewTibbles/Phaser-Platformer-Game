@@ -1,4 +1,5 @@
 var menuNumber = -1;
+var bgMusic
 
 export default
     class MainMenu extends Phaser.Scene {
@@ -7,9 +8,10 @@ export default
     }
 
     preload() {
+        this.load.image('background', 'https://sill-bill.github.io/resource-box/instant-0000/bg.png');
         this.load.image("sprBg0", "assets/MainMenu/sprBg0.png");
         this.load.image("sprBg1", "assets/MainMenu/sprBg1.png");
-        this.load.image("sprBtnPlay", "assets/MainMenu/sprBtnPlay.png");
+        this.load.image("sprBtnPlay", 'assets/MainMenu/btn-start.png');
         this.load.image("sprBtnPlayHover", "assets/MainMenu/sprBtnPlayHover.png");
         this.load.image("sprBtnPlayDown", "assets/MainMenu/sprBtnPlayDown.png");
         this.load.image("sprBtnRestart", "assets/MainMenu/sprBtnRestart.png");
@@ -21,6 +23,13 @@ export default
     }
 
     create() {
+
+        let image = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'background')
+        let scaleX = this.cameras.main.width / image.width
+        let scaleY = this.cameras.main.height / image.height
+        let scale = Math.max(scaleX, scaleY)
+        image.setScale(scale).setScrollFactor(0)
+
         this.sfx = {
             btnOver: this.sound.add("sndBtnOver"),
             btnDown: this.sound.add("sndBtnDown")
@@ -30,7 +39,7 @@ export default
             this.game.config.width * 0.5,
             this.game.config.height * 0.5,
             "sprBtnPlay"
-        );
+        )
 
         this.btnPlay.setInteractive();
 
@@ -50,6 +59,7 @@ export default
 
         this.btnPlay.on("pointerup", function () {
             this.btnPlay.setTexture("sprBtnPlay");
+            bgMusic.play();
             this.scene.start("mainscene");
         }, this);
 
@@ -62,10 +72,11 @@ export default
         });
         this.title.setOrigin(0.5);
 
-        var music = this.sound.add('game', { loop: true });
+        bgMusic = this.sound.add('game');
+        bgMusic.play({ loop: true });
+        bgMusic.volume = 1;
+        bgMusic.pause();
 
-        music.play();
-    
     }
 
     update() {

@@ -1,7 +1,7 @@
 {
   "name": "phaser-platformer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Phaser Platformer developed by Andrew Tibbles for Unit 22 Assignment 1",
   "main": "index.html",
   "scripts": {
     "start": "python ./Server.py"

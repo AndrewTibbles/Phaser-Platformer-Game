@@ -1,7 +1,10 @@
 import Player from "../player.js";
-import createRotatingPlatform from "../create-rotating-platform.js";
+import createRotatingPlatform from "../objects/create-rotating-platform.js";
 
 var help = "";
+var btnLeft;
+var btnRight;
+var btnUp;
 
 export default
   class MainScene extends Phaser.Scene {
@@ -42,7 +45,7 @@ export default
       }
     );
     this.load.atlas("emoji", "../assets/atlases/emoji.png", "../assets/atlases/emoji.json");
-  }
+    }
 
 
   create() {
@@ -92,6 +95,7 @@ export default
     const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
     const lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
     map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
+
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
@@ -267,26 +271,23 @@ export default
   }
 
   onLevel1Win() {
-    // Celebrate only once
-    this.unsubscribeLevel1Win();
-    //map.destroy()
-    this.scene.start('level2');
-
+    this.unsubscribeLevel1Win();//unload level 1
+    this.scene.start('level2');//load level 2
   }
 
-  onwalkcontsign() {
+  onwalkcontsign() { //Walking controls sign
     this.unsubscribewalkcontsign();
-    help.destroy();
-    help = this.add.text(16, 16, "Use the up or W keys to jump.", {
-      fontSize: "18px",
-      padding: { x: 10, y: 5 },
-      backgroundColor: "#ffffff",
+    help.destroy(); //Destroy the sign
+    help = this.add.text(16, 16, "Use the up or W keys to jump.", { //Recreate the sign with the new width
+      fontSize: "18px", //Sets the signs fontsize to 18 px
+      padding: { x: 10, y: 5 }, //Adds padding to the sign
+      backgroundColor: "#ffffff", //Sets the signs background colour
       fill: "#000000"
     });
-    help.setScrollFactor(0).setDepth(1000);
+    help.setScrollFactor(0).setDepth(1000); //Make it follow the user infront of the other layers.
   }
 
-  onsignbewarerotplatform() {
+  onsignbewarerotplatform() { //Rotating platform signs
     this.unsubscribesignbewarerotplatform();
     help.destroy();
     help = this.add.text(16, 16, "Beware the rotating platforms!", {
@@ -307,4 +308,4 @@ export default
     this.cloud4.tilePositionX += 0.30;
   }
 }
-//http://www.html5gamedevs.com/topic/11094-dynamically-loading-tilemaps/
+

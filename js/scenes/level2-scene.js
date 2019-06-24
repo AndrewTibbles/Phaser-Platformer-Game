@@ -1,5 +1,6 @@
 import Player from "../player.js";
-import createRotatingPlatform from "../create-rotating-platform.js";
+import createRotatingPlatform from "../objects/create-rotating-platform.js";
+import createJumpingPlatform from "../objects/create-jumping-platform.js";
 
 export default
   class Level2 extends Phaser.Scene {
@@ -9,22 +10,31 @@ export default
   }
 
   preload() {
+    this.load.path = 'assets/';
     //this.load.tilemapTiledJSON("map", "../assets/tilemaps/level.json");
-    this.load.tilemapTiledJSON("map2", "../assets/tilemaps/level2.json");
+    this.load.tilemapTiledJSON("map2", "tilemaps/level2.json");
     this.load.image(
       "kenney-tileset-64px-extruded",
       "../assets/tilesets/kenney-tileset-64px-extruded.png"
     );
 
+    this.load.image("spring", "images/bounce.png");
+    this.load.image("wooden-plank", "images/wooden-plank.png");
+    this.load.image("block", "images/block.png");
 
-    this.load.image("wooden-plank", "../assets/images/wooden-plank.png");
-    this.load.image("block", "../assets/images/block.png");
+    this.load.image('background2_birds', 'images/game_background_2/layers/birds.png');
+    this.load.image('background2_clouds_1', 'images/game_background_2/layers/clouds_1.png');
+    this.load.image('background2_clouds_2', 'images/game_background_2/layers/clouds_2.png');
+    this.load.image('background2_clouds_3', 'images/game_background_2/layers/clouds_3.png');
+    this.load.image('background2_pines', 'images/game_background_2/layers/pines.png');
+    this.load.image('background2_rocks_1', 'images/game_background_2/layers/rocks_1.png');
+    this.load.image('background2_rocks_2', 'images/game_background_2/layers/rocks_2.png');
+    this.load.image('background2_sky', 'images/game_background_2/layers/sky.png');
 
-    this.load.image('background', 'assets/images/background.png');
 
     this.load.spritesheet(
       "player",
-      "../assets/spritesheets/0x72-industrial-player-32px-extruded.png",
+      "spritesheets/0x72-industrial-player-32px-extruded.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -33,21 +43,59 @@ export default
       }
     );
 
-    this.load.atlas("emoji", "../assets/atlases/emoji.png", "../assets/atlases/emoji.json");
+    this.load.atlas("emoji", "atlases/emoji.png", "atlases/emoji.json");
+    //this.load.multiatlas('spider', "../assets/enemy/spider.png")
   }
 
 
   create() {
     const map = this.make.tilemap({ key: "map2" });
+
+     // Get the window sizes
+ let windowWidth = window.innerWidth;
+ let windowHeight = window.innerHeight;
+
+ // Find the center of the top space
+ let topBackgroundXOrigin = windowWidth / 2;
+ let topBackgroundYOrigin = (windowHeight / 5) * 1.5;
+ let topBackgroundHeight = (windowHeight / 5) * 3;
+
+ // Base width and height of the images
+ let imageBaseWidth = 1920;
+ let imageBaseHeight = 1080;
+ let heightRatio = topBackgroundHeight / imageBaseHeight;
+
+ // Add the sky image at the right location and resize it to take all the space, no scaling needed
+ let skyImage = this.add.image(topBackgroundXOrigin, topBackgroundYOrigin, 'background2_sky');
+ skyImage.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ // Add each layer one by one
+ this.cloud1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_clouds_1');
+ this.cloud1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.cloud2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_clouds_2');
+ this.cloud2.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.rocks1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_rocks_1');
+ this.rocks1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.cloud3 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_clouds_3');
+ this.cloud3.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.rocks2 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_rocks_2');
+ this.rocks2.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.pines = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_pines');
+ this.pines.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+
+ this.birds = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_birds');
+ this.birds.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
+ 
     const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
     map.createDynamicLayer("Background", tileset, 0, 0);
     const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
     const lavaLayer = map.createDynamicLayer("Lava", tileset, 0, 0);
     map.createDynamicLayer("Foreground", tileset, 0, 0).setDepth(10);
-
-
-
-    this.background = this.add.tileSprite(0, 0, 1000, 1000, 'background', 'assets/images/background.png').setOrigin(0).setDepth(-100).setScrollFactor(0)
 
     // Set colliding tiles before converting the layer to Matter bodies
     groundLayer.setCollisionByProperty({ collides: true });
@@ -69,6 +117,19 @@ export default
     // Smoothly follow the player
     this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
 
+    const enemy1 = this.matter.add.sprite(100, 0, "enemy");
+    const enemy2 = this.matter.add.sprite(200, 0, "enemy");
+    const enemy3 = this.matter.add.sprite(300, 0, "enemy");
+    
+    this.matterCollision.addOnCollideStart({
+      objectA: this.player,
+      objectB: [enemy1, enemy2, enemy3],
+      callback: eventData => {
+        console.log("Player hit an enemy");
+        // eventData.gameObjectB will be the specific enemy that was hit
+      }
+    });
+
     this.unsubscribePlayerCollide = this.matterCollision.addOnCollideStart({
       objectA: this.player.sprite,
       callback: this.onPlayerCollide,
@@ -89,23 +150,8 @@ export default
       createRotatingPlatform(this, point.x, point.y);
     });
 
-    // Create a sensor at rectangle object created in Tiled (under the "Sensors" layer)
-    const rect = map.findObject("Sensors", obj => obj.name === "Celebration");
-    const celebrateSensor = this.matter.add.rectangle(
-      rect.x + rect.width / 2,
-      rect.y + rect.height / 2,
-      rect.width,
-      rect.height,
-      {
-        isSensor: true, // It shouldn't physically interact with other bodies
-        isStatic: true // It shouldn't move
-      }
-    );
-    this.unsubscribeCelebrate = this.matterCollision.addOnCollideStart({
-      objectA: this.player.sprite,
-      objectB: celebrateSensor,
-      callback: this.onPlayerWin,
-      context: this
+    map.getObjectLayer("Jumping Locations").objects.forEach(point => {
+      createJumpingPlatform(this, point.x, point.y)
     });
   }
 
@@ -138,24 +184,5 @@ export default
         loop: true
       })
     }
-  }
-
-  onPlayerWin() {
-    // Celebrate only once
-    this.unsubscribeCelebrate();
-
-    // Drop some emojis, of course
-    for (let i = 0; i < 35; i++) {
-      const x = this.player.sprite.x + Phaser.Math.RND.integerInRange(-50, 50);
-      const y = this.player.sprite.y - 150 + Phaser.Math.RND.integerInRange(-10, 10);
-      this.matter.add
-        .image(x, y, "emoji", "1f621", {
-          restitution: 1,
-          friction: 0,
-          density: 0.0001,
-          shape: "circle"
-        })
-        .setScale(0.5);
-    }
-  }
+  }  
 }
