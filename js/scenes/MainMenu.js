@@ -13,6 +13,7 @@ export default
         this.load.image("sprBtnPlayDown", "assets/MainMenu/sprBtnPlayDown.png");
         this.load.image("sprBtnRestart", "assets/MainMenu/sprBtnRestart.png");
         this.load.image("sprBtnRestartHover", "assets/MainMenu/sprBtnRestartHover.png");
+        this.load.image("sprBtnlevelselect", "assets/MainMenu/level-select.png");
         this.load.image("sprBtnRestartDown", "assets/MainMenu/sprBtnRestartDown.png");
         this.load.audio("sndBtnOver", "assets/MainMenu/sndBtnOver.wav");
         this.load.audio("sndBtnDown", "assets/MainMenu/sndBtnDown.wav");
@@ -63,22 +64,16 @@ export default
         this.btnlevelselect = this.add.sprite(
             this.game.config.width * 0.5,
             this.game.config.height * 0.5 + 100,
-            "sprlevelselect"
+            "prBtnlevelselect"
         )
 
         this.btnlevelselect.setInteractive();
 
         this.btnlevelselect.on("pointerover", function () {
-            this.btnlevelselect.setTexture("sprlevelselectHover"); // set the button texture to sprlevelselectHover
             this.sfx.btnOver.play(); // play the button over sound
         }, this);
 
-        this.btnlevelselect.on("pointerout", function () {
-            this.setTexture("sprlevelselect");
-        });
-
         this.btnlevelselect.on("pointerdown", function () {
-            this.btnlevelselect.setTexture("sprlevelselectDown");
             this.sfx.btnDown.play();
         }, this);
 
