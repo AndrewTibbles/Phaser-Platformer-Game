@@ -13,7 +13,7 @@ export default
         this.load.image("sprBtnPlayDown", "assets/MainMenu/sprBtnPlayDown.png");
         this.load.image("sprBtnRestart", "assets/MainMenu/sprBtnRestart.png");
         this.load.image("sprBtnRestartHover", "assets/MainMenu/sprBtnRestartHover.png");
-        this.load.image("sprBtnlevelselect", "assets/MainMenu/level-select.png");
+        this.load.image("sprBtnlevelselect", "assets/MainMenu/select-level.png");
         this.load.image("sprBtnRestartDown", "assets/MainMenu/sprBtnRestartDown.png");
         this.load.audio("sndBtnOver", "assets/MainMenu/sndBtnOver.wav");
         this.load.audio("sndBtnDown", "assets/MainMenu/sndBtnDown.wav");
