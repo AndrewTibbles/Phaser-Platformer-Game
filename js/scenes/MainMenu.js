@@ -64,7 +64,7 @@ export default
         this.btnlevelselect = this.add.sprite(
             this.game.config.width * 0.5,
             this.game.config.height * 0.5 + 100,
-            "prBtnlevelselect"
+            "sprBtnlevelselect"
         )
 
         this.btnlevelselect.setInteractive();
