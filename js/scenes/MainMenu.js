@@ -1,6 +1,3 @@
-var menuNumber = -1;
-var bgMusic
-
 export default
     class MainMenu extends Phaser.Scene {
     constructor() {
@@ -19,11 +16,9 @@ export default
         this.load.image("sprBtnRestartDown", "assets/MainMenu/sprBtnRestartDown.png");
         this.load.audio("sndBtnOver", "assets/MainMenu/sndBtnOver.wav");
         this.load.audio("sndBtnDown", "assets/MainMenu/sndBtnDown.wav");
-        this.load.audio('game', ['assets/audio/Extreme_Game_watermarked.mp3']);
     }
 
     create() {
-
         let image = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'background')
         let scaleX = this.cameras.main.width / image.width
         let scaleY = this.cameras.main.height / image.height
@@ -59,8 +54,37 @@ export default
 
         this.btnPlay.on("pointerup", function () {
             this.btnPlay.setTexture("sprBtnPlay");
-            bgMusic.play();
             this.scene.start("mainscene");
+        }, this);
+
+
+
+
+        this.btnlevelselect = this.add.sprite(
+            this.game.config.width * 0.5,
+            this.game.config.height * 0.5 + 100,
+            "sprlevelselect"
+        )
+
+        this.btnlevelselect.setInteractive();
+
+        this.btnlevelselect.on("pointerover", function () {
+            this.btnlevelselect.setTexture("sprlevelselectHover"); // set the button texture to sprlevelselectHover
+            this.sfx.btnOver.play(); // play the button over sound
+        }, this);
+
+        this.btnlevelselect.on("pointerout", function () {
+            this.setTexture("sprlevelselect");
+        });
+
+        this.btnlevelselect.on("pointerdown", function () {
+            this.btnlevelselect.setTexture("sprlevelselectDown");
+            this.sfx.btnDown.play();
+        }, this);
+
+        this.btnlevelselect.on("pointerup", function () {
+            this.btnlevelselect.setTexture("sprBtnlevelselect");
+            this.scene.start("LevelSelect");
         }, this);
 
         this.title = this.add.text(this.game.config.width * 0.5, 128, "Phaser Platformer", {
@@ -71,12 +95,6 @@ export default
             align: 'center'
         });
         this.title.setOrigin(0.5);
-
-        bgMusic = this.sound.add('game');
-        bgMusic.play({ loop: true });
-        bgMusic.volume = 1;
-        bgMusic.pause();
-
     }
 
     update() {

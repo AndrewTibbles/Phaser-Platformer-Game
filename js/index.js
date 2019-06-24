@@ -3,13 +3,13 @@ import Loading from "./scenes/loading.js";
 import MainMenu from "./scenes/MainMenu.js";
 import MainScene from "./scenes/main-scene.js";
 import Level2 from "./scenes/level2-scene.js";
-
+import LevelSelect from "./scenes/level-select.js";
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 480,
   parent: "game-container",
-  scene: [Loading, MainMenu, MainScene, Level2], // List of scenes to call later
+  scene: [Loading, MainMenu, LevelSelect, MainScene, Level2], // List of scenes to call later
   pixelArt: true,
   physics: { default: "matter" },
   plugins: {
@@ -23,6 +23,5 @@ const config = {
     ]
   }
 };
-
 const game = new Phaser.Game(config);
 

@@ -1,3 +1,5 @@
+var bgMusic;
+
 export default
     class Loading extends Phaser.Scene {
 
@@ -71,9 +73,14 @@ export default
             this.load.image('' + i, './assets/logo.png');
 
         }
+
+        this.load.audio('game', ['assets/audio/Extreme_Game_watermarked.mp3']);
     }
 
     create() {
         this.scene.start('MainMenu');
+        bgMusic = this.sound.add('game');
+        bgMusic.play({ loop: true });
+        bgMusic.volume = 1;
     }
 }
