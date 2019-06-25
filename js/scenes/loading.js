@@ -1,7 +1,7 @@
 var bgMusic;
 
 export default
-    class Loading extends Phaser.Scene {
+class Loading extends Phaser.Scene {
 
     constructor() {
         super({ key: 'loading' });
@@ -49,18 +49,18 @@ export default
 
         assetText.setOrigin(0.5, 0.5);
 
-        this.load.on('progress', function (value) {
+        this.load.on('progress', function(value) {
             percentText.setText(parseInt(value * 100) + '%');
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
             progressBar.fillRect(250, 280, 300 * value, 30);
         });
 
-        this.load.on('fileprogress', function (file) {
+        this.load.on('fileprogress', function(file) {
             assetText.setText('Loading asset: ' + file.key);
         });
 
-        this.load.on('complete', function () {
+        this.load.on('complete', function() {
             progressBar.destroy();
             progressBox.destroy();
             loadingText.destroy();
@@ -68,7 +68,7 @@ export default
             assetText.destroy();
         });
 
-    
+
         for (var i = 0; i < 100; i++) {
             this.load.image('' + i, './assets/logo.png');
 
