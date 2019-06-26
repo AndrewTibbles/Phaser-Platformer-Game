@@ -7,7 +7,7 @@ export default
 class Level2 extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'level2' });
+        super({ key: 'level2' }); // sets the scene key for the level
     }
 
     preload() {
@@ -20,11 +20,19 @@ class Level2 extends Phaser.Scene {
             "../assets/tilesets/kenney-tileset-64px-extruded.png"
         );
 
-        this.load.image("Gear", "images/Gear.png");
+
+        // Load sprite sheet generated with TexturePacker
+        this.load.atlas('Gear', 'atlases/Gear.png', 'atlases/Gear-sprites.json');
+
+        // Load body GearShape from JSON file generated using PhysicsEditor
+        this.load.json("GearShape", "atlases/Gear.json");
+
+        //loads object styles
         this.load.image("spring", "images/bounce.png");
         this.load.image("wooden-plank", "images/wooden-plank.png");
         this.load.image("block", "images/block.png");
 
+        //loads the panarama background assets.
         this.load.image('background2_birds', 'images/game_background_2/layers/birds.png');
         this.load.image('background2_clouds_1', 'images/game_background_2/layers/clouds_1.png');
         this.load.image('background2_clouds_2', 'images/game_background_2/layers/clouds_2.png');
@@ -72,7 +80,7 @@ class Level2 extends Phaser.Scene {
         let skyImage = this.add.image(topBackgroundXOrigin, topBackgroundYOrigin, 'background2_sky');
         skyImage.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
-        // Add each layer one by one
+        // adds the panarama
         this.cloud1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background2_clouds_1');
         this.cloud1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
@@ -120,6 +128,7 @@ class Level2 extends Phaser.Scene {
         // Smoothly follow the player
         this.cameras.main.startFollow(this.player.sprite, false, 0.5, 0.5);
 
+        // adds a falling rock on top of the castle
         const fallingrock1 = this.matter.add.sprite(100, 0, "rock");
         const fallingrock2 = this.matter.add.sprite(200, 0, "rock");
         const fallingrock3 = this.matter.add.sprite(300, 0, "rock");
@@ -128,7 +137,7 @@ class Level2 extends Phaser.Scene {
             objectA: this.player,
             objectB: [fallingrock1, fallingrock2, fallingrock3],
             callback: eventData => {
-                console.log("Player hit rock");
+                console.log("Player hit rock"); // test player collision with object
                 // eventData.gameObjectB will be the specific enemy that was hit
             }
         });
@@ -153,10 +162,12 @@ class Level2 extends Phaser.Scene {
             createRotatingPlatform(this, point.x, point.y);
         });
 
+        // loads the jump pad objects
         map.getObjectLayer("Jumping Locations").objects.forEach(point => {
             createJumpingPlatform(this, point.x, point.y)
         });
 
+        // loads the gear objects
         map.getObjectLayer("Gear Locations 1").objects.forEach(point => {
             createRotatingGear1(this, point.x, point.y);
         });

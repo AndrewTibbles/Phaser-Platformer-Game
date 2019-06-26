@@ -1,6 +1,5 @@
 export default function createRotatingPlatform(scene, x, y, numTiles = 5) {
-  // A TileSprite is a Sprite whose texture repeats to fill the given width and height. We can use
-  // this with an image from our tileset to create a platform composed of tiles:
+  
   const platform = scene.add.tileSprite(x, y, 64 * numTiles, 18, "wooden-plank");
 
   scene.matter.add.gameObject(platform, {
@@ -15,8 +14,7 @@ export default function createRotatingPlatform(scene, x, y, numTiles = 5) {
   // Alias the native Matter.js API
   const { Constraint } = Phaser.Physics.Matter.Matter;
 
-  // Create a point constraint that pins the center of the platform to a fixed point in space, so
-  // it can't move
+  // Create a point constraint that pins the center of the platform to a fixed point in space, so it can't move
   const constraint = Constraint.create({
     pointA: { x: platform.x, y: platform.y },
     bodyB: platform.body,

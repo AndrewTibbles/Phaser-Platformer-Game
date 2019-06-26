@@ -2,9 +2,6 @@ import Player from "../player.js";
 import createRotatingPlatform from "../objects/create-rotating-platform.js";
 
 var help = "";
-var btnLeft;
-var btnRight;
-var btnUp;
 
 export default
   class MainScene extends Phaser.Scene {
@@ -14,18 +11,18 @@ export default
   }
 
   preload() {
-    //this.load.tilemapTiledJSON("map", "../assets/tilemaps/level.json");
+    // loads the level data
     this.load.tilemapTiledJSON("map", "../assets/tilemaps/level.json");
     this.load.image(
       "kenney-tileset-64px-extruded",
       "../assets/tilesets/kenney-tileset-64px-extruded.png"
     );
 
+    // loads the images for the objects
     this.load.image("wooden-plank", "../assets/images/wooden-plank.png");
     this.load.image("block", "../assets/images/block.png");
 
-    //this.load.image('background', 'assets/images/background.png');
-
+    // Loads the background images for the panarama.
     this.load.image('background1_clouds_1', 'assets/images/game_background_1/layers/clouds_1.png');
     this.load.image('background1_clouds_2', 'assets/images/game_background_1/layers/clouds_2.png');
     this.load.image('background1_clouds_3', 'assets/images/game_background_1/layers/clouds_3.png');
@@ -34,6 +31,7 @@ export default
     this.load.image('background1_rocks_2', 'assets/images/game_background_1/layers/rocks_2.png');
     this.load.image('background1_sky', 'assets/images/game_background_1/layers/sky.png');
 
+    //loads the player sprite sheet=
     this.load.spritesheet(
       "player",
       "../assets/spritesheets/0x72-industrial-player-32px-extruded.png",
@@ -49,6 +47,7 @@ export default
 
 
   create() {
+    //creates a tilemap based on the key map from level.json
     const map = this.make.tilemap({ key: "map" });
 
     //this.background = this.add.tileSprite(0, 0, 1000, 1000, 'background', 'assets/images/background.png').setOrigin(0).setDepth(-100).setScrollFactor(0)
@@ -71,7 +70,7 @@ export default
     let skyImage = this.add.image(topBackgroundXOrigin, topBackgroundYOrigin, 'background1_sky');
     skyImage.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
-    // Add each layer one by one
+    // Panarama background
     this.cloud1 = this.add.tileSprite(topBackgroundXOrigin, topBackgroundYOrigin, imageBaseWidth, imageBaseHeight, 'background1_clouds_1');
     this.cloud1.setDisplaySize(windowWidth, topBackgroundHeight).setScrollFactor(0);
 
@@ -212,6 +211,7 @@ export default
       context: this
     })
 
+    // Level 1 first help message
     help = this.add.text(16, 16, "Arrows/WASD to move the player.", {
       fontSize: "18px",
       padding: { x: 10, y: 5 },
@@ -255,7 +255,7 @@ export default
   onPlayerWin() {
     // Celebrate only once
     this.unsubscribeCelebrate();
-    // Drop some emojis, of course
+    // Drop some apples
     for (let i = 0; i < 35; i++) {
       const x = this.player.sprite.x + Phaser.Math.RND.integerInRange(-50, 50);
       const y = this.player.sprite.y - 150 + Phaser.Math.RND.integerInRange(-10, 10);
@@ -289,8 +289,8 @@ export default
 
   onsignbewarerotplatform() { //Rotating platform signs
     this.unsubscribesignbewarerotplatform();
-    help.destroy();
-    help = this.add.text(16, 16, "Beware the rotating platforms!", {
+    help.destroy(); // Destorys the help text to be replaced
+    help = this.add.text(16, 16, "Beware the rotating platforms!", { // Level 1 help message
       fontSize: "18px",
       padding: { x: 10, y: 5 },
       backgroundColor: "#ffffff",
@@ -300,6 +300,7 @@ export default
   }
 
   update() {
+    //Changes the panarama backgrounds layer positions
     this.cloud1.tilePositionX += 0.05;
     this.cloud2.tilePositionX += 0.05;
     this.rocks1.tilePositionX += 0.10;

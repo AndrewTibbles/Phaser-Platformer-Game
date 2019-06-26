@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "Gear-sprites.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 393,
+				"h": 397
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Gear.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 391,
+						"h": 395
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 391,
+						"h": 395
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 391,
+						"h": 395
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ff1a9f6f2f7860264e049c5bcd86cc35:c4d2235f31458fe71bdb73de87fa13c9:6f19fd6936ba563d673f5fee044b47ea$"
+	}
+}

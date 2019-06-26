@@ -200,17 +200,26 @@ export default class Player {
     // Limit horizontal speed, without this the player's velocity would just keep increasing to
     // absurd speeds. We don't want to touch the vertical velocity though, so that we don't
     // interfere with gravity.
-    if (velocity.x > 7) sprite.setVelocityX(7);
-    else if (velocity.x < -7) sprite.setVelocityX(-7);
+    if (velocity.x > 7)
+    { 
+      console.log("player moving right");
+      sprite.setVelocityX(7);
+    }
+    else if (velocity.x < -7)  { 
+      console.log("player moving left");
+      sprite.setVelocityX(-7);
+    }
 
     // --- Move the player vertically ---
 
     if (isJumpKeyDown && this.canJump && isOnGround) {
       if (isCrouchKeyDown) {
         sprite.setVelocityY(-5);
+        console.log("player jumped low");
       }
       if (!isCrouchKeyDown) {
         sprite.setVelocityY(-10);
+        console.log("player jumped high");
       }
 
       // Add a slight delay between jumps since the bottom sensor will still collide for a few
